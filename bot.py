@@ -13,32 +13,7 @@ def authenticate():
         with open('token.pkl', 'rb') as f:
             creds = pickle.load(f)
     if not creds or not creds.valid:
-        # Load credentials.json from the CREDENTIALS_JSON environment variable
-        credentials_json = os.getenv("CREDENTIALS_JSON")
-        if not credentials_json:
-            raise ValueError("CREDENTIALS_JSON environment variable is not set.")
-        
-        try:
-            # Validate the JSON before writing it to a file
-            json.loads(credentials_json)
-        except json.JSONDecodeError as e:
-            raise ValueError(f"Invalid JSON in CREDENTIALS_JSON: {e}")
-        
-        # Write the credentials JSON to a temporary file
-        with open("credentials.json", "w") as f:
-            f.write(credentials_json)
-        
-        # Use InstalledAppFlow for authentication
-        flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
-        creds = flow.run_console()  # Use run_console for headless environments
-        
-        # Save the token for future use
-        with open('token.pkl', 'wb') as f:
-            pickle.dump(creds, f)
-        
-        # Clean up the temporary credentials.json file
-        os.remove("credentials.json")
-    
+        raise ValueError("Token is invalid or missing. Please generate a valid token.pkl file.")
     return build('youtube', 'v3', credentials=creds)
 
 def get_latest_videos(youtube, channel_id):
