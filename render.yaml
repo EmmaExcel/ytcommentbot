@@ -1,0 +1,8 @@
+services:
+  - type: cron
+    name: youtube-comment-bot
+    runtime: python
+    plan: free
+    schedule: "every 8 hours"
+    buildCommand: ""
+    startCommand: "python bot.py"
