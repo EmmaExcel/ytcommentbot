@@ -17,6 +17,12 @@ def authenticate():
         if not credentials_json:
             raise ValueError("CREDENTIALS_JSON environment variable is not set.")
         
+        try:
+            # Validate the JSON before writing it to a file
+            json.loads(credentials_json)
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Invalid JSON in CREDENTIALS_JSON: {e}")
+        
         # Write the credentials JSON to a temporary file
         with open("credentials.json", "w") as f:
             f.write(credentials_json)
