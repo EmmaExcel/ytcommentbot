@@ -12,10 +12,17 @@ def authenticate():
         with open('token.pkl', 'rb') as f:
             creds = pickle.load(f)
     if not creds or not creds.valid:
+        credentials_json = os.getenv("CREDENTIALS_JSON")
+        if not credentials_json:
+            raise ValueError("CREDENTIALS_JSON environment variable is not set.")
+        with open("credentials.json", "w") as f:
+            f.write(credentials_json)
         flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
         creds = flow.run_local_server(port=0)
         with open('token.pkl', 'wb') as f:
             pickle.dump(creds, f)
+        os.remove("credentials.json")
+    
     return build('youtube', 'v3', credentials=creds)
 
 def get_latest_videos(youtube, channel_id):
