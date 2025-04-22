@@ -18,7 +18,7 @@ def authenticate():
         with open("credentials.json", "w") as f:
             f.write(credentials_json)
         flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
-        creds = flow.run_local_server(port=0)
+        creds = flow.run_console()  # Use run_console for headless environments
         with open('token.pkl', 'wb') as f:
             pickle.dump(creds, f)
         os.remove("credentials.json")
