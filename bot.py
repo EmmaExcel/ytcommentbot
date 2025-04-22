@@ -9,6 +9,7 @@ SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl']
 
 def authenticate():
     creds = None
+    # Check if token.pkl exists
     if os.path.exists('token.pkl'):
         with open('token.pkl', 'rb') as f:
             creds = pickle.load(f)
